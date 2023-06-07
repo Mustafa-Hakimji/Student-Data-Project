@@ -1,0 +1,8 @@
+{
+    "name":"Mustafa Hakimji",
+    "email":"mustafahussaini757@gmail.com",
+    "phone":9098604850,
+    "work":"Web Developer",
+    "password":"Mh@90987",
+    "cpassword":"Mh@90987"
+}

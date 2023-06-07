@@ -1,0 +1,24 @@
+.login-form{
+    background: rgb(252, 255, 223);
+    border-radius: 20px;
+    border: 1px solid rgb(255, 205, 205);
+
+}
+    .input-data {
+        border: none;
+        border-radius: 10px;
+        border-bottom: 4px solid rgb(26, 49, 255);
+        background: rgb(253, 255, 227);
+        color: black;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .login-images{
+        margin-left: -1300px;
+        margin-top: 220px;
+    }
+
+    Link{
+        margin-left: 1000px;
+    }

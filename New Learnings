@@ -1,0 +1,68 @@
+DOTENV:-
+
+this is the new libirary which I learned today 22 Nov 2022.
+
+This Libirary helps us to hide all our URLS and the objects which contains password and we dont want to share on GIT and with someone.
+
+How to Use?
+
+1) Install the dependancy by using the command "npm i dotenv".
+
+2) After it installed we need to run the command in the terminal "type null > config.env". basically this command is to search for if any folder is available with this name or not but if there is no folder available then it will create a new folder of the given name.
+
+3) We need to require this dependency by using command "const dotenv = require('dotenv");"
+
+4) Then in the config folder which is being created by dotenv which is "config.env", we need to copy our mongo DB url or any URL or thing which have password in it like this:- "DATABASE= mongodb+srv://Mustafa:9425481384@cluster0.0huzp3w.mongodb.net/mernstack?retryWrites=true&w=majority"
+"PORT= 4000", make sure that the name which we are giving should be in capital.
+
+5) Now after creating the varialbles inside the config.env file we need to access the same in our main file which is in my case is "app.js" like this:-"dotenv.config({path: './config.env'})" //here we are giving the of the confog file created the dotenv. after creating the path we can access the variable defined inside the config.env file.
+const DB = process.env.DATABASE;" /we are here using the "process" method which is pre defined in dotenv. to access the DATABASE variable.
+"const port = process.env.PORT;"/we are here using the "process" method which is pre defined in dotenv. to access the PORT variable.
+
+6) And after doing this we need to add the "config.env" file in to the "gitignore" file. so it will not push to the git.
+
+This is all about the DOTENV dependency.
+=====================================================================================================================================
+BCRYPT:-
+
+this is the new libirary which I learned today 2 Nov 2022.
+
+This Libirary basicall we to for "password Hashing". like if there is a website we are creating which have parameter of login and password, so in this case what we can do instead of saving the password in its actual form what we or user is typing we can create a Hash form of it so it will become more secure and hackers cannot get it very easily.
+
+so what are the steps which we need to follow while performing "Password Hashing".
+
+1) There is dependency "bcrypt" which we need to install using the command "npm i bcrypt".
+
+2) Then we need to go to the "Schema" file where we have defined the "Schema" to savethe data to Mongo DB.
+
+3) Then "after the Schema pasrt" and "before defining the model and Export" we need to write our code for "password Hashing".
+
+4) First we need to import teh dependency by using the command "const bcrypt = require('bcrypt');".
+
+5) Then we need to write a function by using the Schema format in my case it is "userSchema" which I have stored in a variable like "const userSchema" and in the same varible I have wrote the Schema logic using mongoose.
+
+6) Then we need to call the "pre" method which is a predefined method provided by the mongoose as we have stored the mongoose logic in it so the variable can also be able to use the mongoose method and the password which we want to convert into the hashing form is in the same variable that is why we need to write the code by using the same variable.
+
+7) Now this the function which we need to write "userSchema.pre('save', async function(next){};" now this "pre" method will take 2 parameters first the method or function name before which we want to run this code or logic means before we are saving the user details, that is why in the very first parameter we have provided the name "save" as we want this code to be run before the save method we have called to save the user.
+
+8) Then the second parameter id a function which should must be a "async" function because it will return the promises and we need to wait to run our code for those promises to be fulfilled like this:- "async function(next)" and in this function we need give the method "next" which we have to use after promises fulfilled.
+
+9)Then we need to write the if condition for the logic to be run like this:-
+
+	if (this.isModified('password')){
+        this.password = await bcrypt.hash(this.password,12);     
+        this.cpassword = await bcrypt.hash(this.cpassword,12);  
+    }
+    next();
+In the above code in if condition we have given th (this.isModified('password')) in this code "this.isModified" is a predefined method which is used to check if the provided parameter has been modified or not. if provided parameter is modified then our if condition will run in my case the parameter is "paddword".
+
+after the if we have written the logic by using the dependency "bcrypt".
+
+10) After the if the first "this.password" refers to the "password" which is present in the "Schema" and the one which is after "bcrypt" refers to the "password" which is in the "postman" or in "MongoDB", and we also need to write "await" before the "bcrypt" dependancy invocation. so our function will wait for the response which will come from the "Postman" or "MongoDB".and the same will goes with the "confirm password" this.password = await bcrypt.hash(this.password,12); / this.cpassword = await bcrypt.hash(this.cpassword,12);.
+
+11) After the whole logic we need to write the "next();" so it could go for the nexr method which is save and it will save the user details alond with the password hashing.
+
+This is all about the BCRYPT dependency.
+=============================================================================================
+
+
