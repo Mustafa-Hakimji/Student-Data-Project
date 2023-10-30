@@ -1,0 +1,52 @@
+.signup-form {
+  background: rgb(255, 232, 232);
+  border-radius: 10px;
+  height: 100%;
+  width: "80%";
+  border: 1px solit rgb(0, 0, 0);
+}
+
+.input-data {
+  border: none;
+  border-radius: 10px;
+  border-bottom: 4px solid rgb(236, 26, 255);
+  background: rgb(255, 255, 255);
+  color: black;
+  height: 40px;
+  font-size: 20px;
+  width: 30%;
+}
+
+.form-submit {
+  background: rgb(30, 128, 255);
+  width: 80px;
+  height: 40px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+.form-submit:hover {
+  height: 45px;
+  width: 120px;
+  color: rgb(1, 1, 2);
+  background: rgb(132, 210, 255);
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+.zmdi {
+  font-size: 30px;
+  padding-right: 20px;
+  color: rgb(69, 104, 69);
+}
+
+figure {
+  margin-left: 700px;
+  margin-top: -400px;
+}
+
+.signup-page-link {
+  margin-left: 700px;
+  color: rgb(234, 0, 255);
+  font-size: 20px;
+  margin-top: -100px;
+}

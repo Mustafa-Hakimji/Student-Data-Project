@@ -1,0 +1,25 @@
+Teacher add Schema.
+{
+  "fName":"Mustafa",
+  "lName":"Hakimji",
+  "email":"mustafa@gmail.com",
+  "phone":"9098604850", 
+  "designation":"Teacher", 
+  "password":"123456", 
+  "cpassword" :"123456"
+  }
+
+  Student Add schema.
+
+    {
+    "name": "",
+    "surname": "",
+    "standard": "",
+    "father": "",
+    "mother": "",
+    "adhaar": "",
+    "phone": "",
+    "sssm": "",
+    "bank": "",
+    "ifsc": "",
+  },
