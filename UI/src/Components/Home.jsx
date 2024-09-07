@@ -49,7 +49,7 @@ const Home = () => {
           </button>
         </Link>
 
-        {userData.designation === "Admin" && (
+        {userData?.designation === "Admin" && (
           <Link to={`/delete-detail`}>
             <button
               style={buttonStyles}

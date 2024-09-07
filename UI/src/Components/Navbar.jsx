@@ -73,7 +73,7 @@ const Navbar = () => {
               </Link>
             </li>
 
-            {userData.designation === "Admin" && (
+            {userData?.designation === "Admin" && (
               <li className="nav-item">
                 <Link to={"/signup"} className="nav-link" href="#">
                   Register
