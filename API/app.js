@@ -16,8 +16,8 @@ app.use(
 dotenv.config({ path: "./config.env" });
 // const DB =
 //   "mongodb+srv://Mustafa:9425481384@cluster0.0huzp3w.mongodb.net/mernstack?retryWrites=true&w=majority";
-const DB =
-  "mongodb+srv://Hakimji:12345@cluster1.t0abgew.mongodb.net/?retryWrites=true&w=majority";
+const DB = process.env.DATABASE;
+
 const port = process.env.PORT;
 
 // connecting to the Data Base using Mongoose
