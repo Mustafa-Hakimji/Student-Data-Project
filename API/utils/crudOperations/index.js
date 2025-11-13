@@ -29,15 +29,13 @@ const deleteData = async ({ model, field, value }) => {
     const deletedDoc = await model.findOneAndDelete({ [field]: value });
 
     if (!deletedDoc) {
-      // No match found
       return null;
     }
 
-    // Successfully deleted
     return deletedDoc;
   } catch (error) {
     console.error("Error deleting document:", error);
-    throw error; // Let the route handler catch this
+    throw error;
   }
 };
 
