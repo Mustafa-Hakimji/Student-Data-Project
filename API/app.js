@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const User = require("./model/userSchema");
 const cors = require("cors");
 
 app.use(
@@ -12,15 +11,10 @@ app.use(
   })
 );
 
-// I am using the dotenv to hide my database URL and PORT number
 dotenv.config({ path: "./config.env" });
-// const DB =
-//   "mongodb+srv://Mustafa:9425481384@cluster0.0huzp3w.mongodb.net/mernstack?retryWrites=true&w=majority";
 const DB = process.env.DATABASE;
 
 const port = process.env.PORT;
-
-// connecting to the Data Base using Mongoose
 mongoose
   .connect(DB)
   .then(() => {
@@ -33,7 +27,10 @@ mongoose
 app.use(express.json());
 
 // Middle ware for Login Authentication
-app.use(require("./router/auth"));
+app.use("/", require("./router/auth"));
+// app.use("students", require("./router/student"));
+// app.use("classes", require("./router/classes"));
+app.use("/teachers", require("./router/teacher"));
 
 // Server Listning PORT
 app.listen(port, () => {

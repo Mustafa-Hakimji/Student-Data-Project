@@ -1,19 +1,34 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const ClassSchema = mongoose.Schema({
-  title: {
+const classSchema = new mongoose.Schema({
+  name: {
     type: String,
-    required: [true, "A class must have a title"],
-    trim: true,
+    required: true,
+    unique: true,
   },
+
+  teacher: {
+    type: String,
+    required: false,
+  },
+
   fees: {
     type: Number,
-    required: [true, "A class must have a fees"],
-    trim: true,
+    required: true,
   },
+
   busFees: {
     type: Number,
-    required: [true, "A class must have a bus fees"],
-    trim: true,
+    required: true,
   },
+
+  // optional: list of students (referencing)
+  students: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
+    },
+  ],
 });
+
+export default mongoose.model("Class", classSchema);

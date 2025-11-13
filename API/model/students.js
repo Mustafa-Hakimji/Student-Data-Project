@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
 
 const StudentSchema = mongoose.Schema({
-  fName: {
+  firstName: {
     type: String,
     require: [true, "A student must have a first name"],
     trim: true,
   },
-  mName: {
+  middleName: {
     type: String,
     require: false,
   },
-  lName: {
+  lastName: {
     type: String,
     require: [true, "A student must have a last name"],
     trim: true,
@@ -41,12 +41,12 @@ const StudentSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
-  fatherName: {
+  fathersName: {
     type: String,
     require: [true, "A student must have a last name"],
     trim: true,
   },
-  motherName: {
+  mothersName: {
     type: String,
     require: [true, "A student must have a last name"],
     trim: true,
