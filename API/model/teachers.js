@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const teaxherSchema = new mongoose.Schema({
+const teacherSchema = new mongoose.Schema({
   fullName: {
     type: String,
     require: [true, "A teacher must have a full name"],
@@ -31,8 +31,28 @@ const teaxherSchema = new mongoose.Schema({
     type: Number,
     required: [true, "A teacher must have a salary."],
   },
+  createdBy: {
+    type: String,
+    require: false,
+    trim: true,
+  },
+  createdAt: {
+    type: String,
+    require: false,
+    trim: true,
+  },
+  updatedBy: {
+    type: String,
+    require: false,
+    trim: true,
+  },
+  updatedAt: {
+    type: String,
+    require: false,
+    trim: true,
+  },
 });
 
-const Teacher = mongoose.model("users", teaxherSchema);
+const Teacher = mongoose.model("users", teacherSchema);
 
 module.exports = Teacher;
