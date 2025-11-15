@@ -1,3 +1,5 @@
+const { USER_NOT_FOUND, USER_DELETED } = require("../constants/appConstants");
+
 const addNewData = async ({ model, data, dupField }) => {
   try {
     for (const [key, value] of Object.entries(data)) {
@@ -26,13 +28,24 @@ const addNewData = async ({ model, data, dupField }) => {
 
 const deleteData = async ({ model, field, value }) => {
   try {
-    const deletedDoc = await model.findOneAndDelete({ [field]: value });
+    let deletedUser = [];
+    for (const i of value) {
+      const result = await model.findOneAndDelete({ [field]: i });
+      const deleteResult = {
+        user: i,
+        status: USER_NOT_FOUND,
+      };
+      if (!result) {
+        deletedDoc = null;
+        deleteResult.status = USER_NOT_FOUND;
+      } else {
+        deleteResult.status = USER_DELETED;
+      }
 
-    if (!deletedDoc) {
-      return null;
+      deletedUser.push(deleteResult);
     }
 
-    return deletedDoc;
+    return deletedUser;
   } catch (error) {
     console.error("Error deleting document:", error);
     throw error;

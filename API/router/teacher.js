@@ -12,6 +12,8 @@ const {
   USER_EXIST,
   USER_DELETED,
   USER_NOT_FOUND,
+  EMAIL_REQUIRED,
+  TEACHER_UPDATED,
 } = require("../utils/constants/appConstants");
 const { addNewData, deleteData } = require("../utils/crudOperations");
 
@@ -26,21 +28,19 @@ router.get("/all", async (req, res) => {
     if (!data || data?.length <= 0) {
       return res
         .status(404)
-        .json({ status: "failuer", message: getNotFound("Teachers") });
+        .json({ status: "failure", message: getNotFound("Teachers") });
     }
 
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        message: getDataFound("Teachers"),
-        results: data.length,
-        data,
-      });
+    return res.status(200).json({
+      status: "success",
+      message: getDataFound("Teachers"),
+      results: data.length,
+      data,
+    });
   } catch (error) {
     return res
       .status(400)
-      .json({ status: "failuer", message: getCommonError("getting teacher") });
+      .json({ status: "failure", message: getCommonError("getting teacher") });
   }
 });
 
@@ -50,12 +50,12 @@ router.get("/:name", async (req, res) => {
     const teacher = Teacher.findOne({ fullName: name });
     if (!teacher)
       return res.status(404).json({
-        status: "failuer",
+        status: "failure",
         message: `Teacher not found with name ${name}`,
       });
   } catch (error) {
     return res.status(400).json({
-      status: "failuer",
+      status: "failure",
       message: `Some exeption occured in getting teacher.`,
     });
   }
@@ -101,7 +101,7 @@ router.delete("/", async (req, res) => {
   try {
     const { email } = req.body;
 
-    if (!email) {
+    if (email.length <= 0) {
       return res
         .status(400)
         .json({ status: "error", message: "Email is required" });
@@ -113,14 +113,48 @@ router.delete("/", async (req, res) => {
       value: email,
     });
 
-    if (result) {
-      return res.status(200).json({ status: "success", message: USER_DELETED });
+    if (result?.length > 0) {
+      return res
+        .status(200)
+        .json({ status: "success", message: USER_DELETED, data: result });
     }
 
     return res.status(404).json({ status: "error", message: USER_NOT_FOUND });
   } catch (error) {
     console.error("Delete route error:", error);
     return res.status(500).json({ status: "error", message: "Server error" });
+  }
+});
+
+router.patch("/", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        status: "failure",
+        message: EMAIL_REQUIRED,
+      });
+    }
+    const updatedTeacher = await Teacher.findOneAndUpdate({ email }, req.body, {
+      new: true,
+    });
+
+    if (!updatedTeacher) {
+      return res
+        .status(404)
+        .json({ status: "failure", message: USER_NOT_FOUND });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      message: TEACHER_UPDATED,
+      data: updatedTeacher,
+    });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ status: "failure", message: getCommonError("updating teacher") });
   }
 });
 

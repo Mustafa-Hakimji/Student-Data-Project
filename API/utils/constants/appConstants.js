@@ -13,3 +13,5 @@ export const FIELDS_REQUIRED = "All fields are required.";
 export const USER_EXIST = "User already exist.";
 export const USER_DELETED = "User deleted successfully.";
 export const USER_NOT_FOUND = "User not found";
+export const EMAIL_REQUIRED = "Email is required for updating teacher.";
+export const TEACHER_UPDATED = "Teacher updated successfully.";
