@@ -22,7 +22,6 @@ const classSchema = new mongoose.Schema({
     required: true,
   },
 
-  // optional: list of students (referencing)
   students: [
     {
       type: mongoose.Schema.Types.ObjectId,

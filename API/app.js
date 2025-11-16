@@ -29,7 +29,7 @@ app.use(express.json());
 // Middle ware for Login Authentication
 app.use("/", require("./router/auth"));
 app.use("/students", require("./router/student"));
-// app.use("/classes", require("./router/classes"));
+app.use("/classes", require("./router/classes"));
 app.use("/teachers", require("./router/teacher"));
 
 // Server Listning PORT

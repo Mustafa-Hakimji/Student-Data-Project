@@ -3,48 +3,48 @@ const mongoose = require("mongoose");
 const StudentSchema = mongoose.Schema({
   firstName: {
     type: String,
-    require: [true, "A student must have a first name"],
+    required: [true, "A student must have a first name"],
     trim: true,
   },
   middleName: {
     type: String,
-    require: false,
+    required: false,
   },
   lastName: {
     type: String,
-    require: [true, "A student must have a last name"],
+    required: [true, "A student must have a last name"],
     trim: true,
   },
   rollNumber: {
     type: Number,
-    require: [true, "A student must have a roll number"],
+    required: [true, "A student must have a roll number"],
     unique: true,
   },
   adhaar: {
     type: Number,
-    require: [true, "A student must have adhaar card number"],
+    required: [true, "A student must have adhaar card number"],
     unique: true,
   },
   sssm: {
     type: Number,
-    require: false,
-    unique: true,
+    required: false,
   },
   attendance: {
     type: [String],
   },
   class: {
-    type: String,
-    require: [true, "A student must have a class assigned."],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Class",
+    required: true,
   },
   stream: {
     type: String,
     default: "none",
-    require: false,
+    required: false,
   },
   feesAmount: {
     type: Number,
-    require: [true, "A student must have fees as per his class"],
+    required: [true, "A student must have fees as per his class"],
   },
   pendingFees: {
     type: Number,
@@ -52,60 +52,60 @@ const StudentSchema = mongoose.Schema({
   },
   fathersName: {
     type: String,
-    require: [true, "A student must have a last name"],
+    required: [true, "A student must have a last name"],
     trim: true,
   },
   mothersName: {
     type: String,
-    require: [true, "A student must have a last name"],
+    required: [true, "A student must have a last name"],
     trim: true,
   },
   mobileNumberFather: {
     type: Number,
-    require: [true, "A student must have his/her father mobile number"],
+    required: [true, "A student must have his/her father mobile number"],
   },
   mobileNumberMother: {
     type: Number,
-    require: false,
+    required: false,
   },
   bankAccountNumber: {
     type: Number,
-    require: [true, "A student must have an bank account number"],
+    required: [true, "A student must have an bank account number"],
   },
   ifscCode: {
     type: String,
-    require: [true, "A student must have an IFSC code"],
+    required: [true, "A student must have an IFSC code"],
   },
   achievements: {
     type: [String],
-    require: false,
+    required: false,
   },
   reportCards: {
     type: [Object],
-    require: false,
+    required: false,
   },
   createdBy: {
     type: String,
-    require: false,
+    required: false,
     trim: true,
   },
   createdAt: {
     type: String,
-    require: false,
+    required: false,
     trim: true,
   },
   updatedBy: {
     type: String,
-    require: false,
+    required: false,
     trim: true,
   },
   updatedAt: {
     type: String,
-    require: false,
+    required: false,
     trim: true,
   },
 });
 
-const Student = mongoose.model("students", StudentSchema);
+const Student = mongoose.model("Student", StudentSchema);
 
 module.exports = Student;
