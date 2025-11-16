@@ -15,23 +15,32 @@ const StudentSchema = mongoose.Schema({
     require: [true, "A student must have a last name"],
     trim: true,
   },
+  rollNumber: {
+    type: Number,
+    require: [true, "A student must have a roll number"],
+    unique: true,
+  },
   adhaar: {
     type: Number,
     require: [true, "A student must have adhaar card number"],
+    unique: true,
   },
   sssm: {
     type: Number,
     require: false,
+    unique: true,
   },
   attendance: {
     type: [String],
   },
   class: {
-    type: [String],
+    type: String,
+    require: [true, "A student must have a class assigned."],
   },
   stream: {
     type: String,
     default: "none",
+    require: false,
   },
   feesAmount: {
     type: Number,
@@ -64,8 +73,36 @@ const StudentSchema = mongoose.Schema({
     require: [true, "A student must have an bank account number"],
   },
   ifscCode: {
-    type: Number,
+    type: String,
     require: [true, "A student must have an IFSC code"],
+  },
+  achievements: {
+    type: [String],
+    require: false,
+  },
+  reportCards: {
+    type: [Object],
+    require: false,
+  },
+  createdBy: {
+    type: String,
+    require: false,
+    trim: true,
+  },
+  createdAt: {
+    type: String,
+    require: false,
+    trim: true,
+  },
+  updatedBy: {
+    type: String,
+    require: false,
+    trim: true,
+  },
+  updatedAt: {
+    type: String,
+    require: false,
+    trim: true,
   },
 });
 

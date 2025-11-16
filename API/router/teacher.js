@@ -19,9 +19,7 @@ const { addNewData, deleteData } = require("../utils/crudOperations");
 
 const router = express.Router();
 
-router.get("/", (req, res) => res.send("Teachers route is working"));
-
-router.get("/all", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const data = await Teacher.find();
 
@@ -47,16 +45,27 @@ router.get("/all", async (req, res) => {
 router.get("/:name", async (req, res) => {
   try {
     const name = req.params.name;
-    const teacher = Teacher.findOne({ fullName: name });
-    if (!teacher)
+
+    const teacher = await Teacher.findOne({
+      fullName: new RegExp(`^${name}$`, "i"),
+    });
+
+    if (!teacher) {
       return res.status(404).json({
         status: "failure",
         message: `Teacher not found with name ${name}`,
       });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      message: `Teacher found successfully with name ${name}`,
+      data: teacher,
+    });
   } catch (error) {
-    return res.status(400).json({
+    return res.status(500).json({
       status: "failure",
-      message: `Some exeption occured in getting teacher.`,
+      message: `An error occurred while getting the teacher.`,
     });
   }
 });
