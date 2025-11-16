@@ -169,10 +169,47 @@ const updateTeacher = async (req, res) => {
     });
   }
 };
+
+const teacherLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if the teacher exists
+    const teacher = await Teacher.findOne({ email });
+    if (!teacher) {
+      return res.status(404).json({
+        status: "failure",
+        message: `No teacher found with email ${email}`,
+      });
+    }
+
+    // Validate password
+    const isMatch = teacher?.password === password;
+    if (!isMatch) {
+      return res.status(401).json({
+        status: "failure",
+        message: "Invalid email or password",
+      });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      message: "Login successful",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "failure",
+      message: "An error occurred during login",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAllTeachers,
   deleteTeacher,
   getTeacherByName,
   addNewTeacher,
   updateTeacher,
+  teacherLogin,
 };
