@@ -174,7 +174,6 @@ const teacherLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if the teacher exists
     const teacher = await Teacher.findOne({ email });
     if (!teacher) {
       return res.status(404).json({
@@ -186,7 +185,7 @@ const teacherLogin = async (req, res) => {
     // Validate password
     const isMatch = teacher?.password === password;
     if (!isMatch) {
-      return res.status(401).json({
+      return res.status(400).json({
         status: "failure",
         message: "Invalid email or password",
       });
@@ -195,6 +194,7 @@ const teacherLogin = async (req, res) => {
     return res.status(200).json({
       status: "success",
       message: "Login successful",
+      user: teacher,
     });
   } catch (error) {
     return res.status(500).json({
