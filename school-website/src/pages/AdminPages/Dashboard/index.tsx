@@ -14,6 +14,7 @@ import {
 import { useEffect } from "react";
 import { getStudentsRequest } from "../../../provider/slices/studentSlice";
 import FullScreenLoader from "../../../components/Loader";
+import { getClassesRequest } from "../../../provider/slices/classesSlice";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getStudentsRequest());
+    dispatch(getClassesRequest());
   }, []);
 
   return (

@@ -1,10 +1,10 @@
-import React from "react";
 import "./styles.css";
 import { useAppSelector } from "../../../../../provider/hooks";
+import { getClassById } from "../../../../../utils/customFunctions/commonFunctions";
 const ViewAndEditStudents = () => {
   const students = useAppSelector((state) => state.students.students);
+  const { classes } = useAppSelector((state) => state.classes);
 
-  console.log({ students });
   return (
     <div className="view-contaiuner">
       <table className="table table-dark table-hover">
@@ -13,7 +13,29 @@ const ViewAndEditStudents = () => {
             <th scope="col">S.No</th>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
-            <th scope="col">Class</th>
+            <th scope="col">
+              <div className="dropdown">
+                <button
+                  className="btn btn-secondary dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Class
+                </button>
+                <ul className="dropdown-menu">
+                  {classes.map((item) => {
+                    return (
+                      <li>
+                        <a className="dropdown-item" href="#">
+                          {item?.name}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </th>
             <th scope="col">Roll No.</th>
             <th scope="col">Adhaar</th>
             <th scope="col">SSSM</th>
@@ -30,7 +52,7 @@ const ViewAndEditStudents = () => {
                 <td>{index + 1}</td>
                 <td>{item?.firstName}</td>
                 <td>{item?.lastName}</td>
-                <td>{item?.class}</td>
+                <td>{getClassById(item?.class, classes)?.name}</td>
                 <td>{item?.rollNumber}</td>
                 <td>{item?.adhaar}</td>
                 <td>{item?.sssm}</td>

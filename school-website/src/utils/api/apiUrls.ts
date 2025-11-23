@@ -6,4 +6,5 @@ export const API_URL = {
   teachersByName: (name: string) => `${baseUrl}/teachers/${name}`,
   students: `${baseUrl}/students`,
   studentsByName: (name: string) => `${baseUrl}/students/${name}`,
+  classes: `${baseUrl}/classes`,
 };
