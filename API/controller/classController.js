@@ -4,9 +4,16 @@ const Student = require("../model/students.js");
 // CREATE CLASS
 const createClass = async (req, res) => {
   try {
+    const isClassExist = await Class.find({ name: req.body.name });
+    if (isClassExist) {
+      return res
+        .status(400)
+        .json({ status: "failure", message: "Class already exist." });
+    }
+
     const newClass = await Class.create(req.body);
 
-    res.status(201).json({
+    res.status(200).json({
       status: "success",
       data: newClass,
     });
@@ -69,9 +76,11 @@ const deleteClass = async (req, res) => {
   try {
     await Class.findByIdAndDelete(req.params.id);
 
-    res.status(204).json({ status: "success", data: null });
+    return res
+      .status(200)
+      .json({ status: "success", message: "Class deleted successfully." });
   } catch (err) {
-    res.status(500).json({ status: "fail", message: err.message });
+    return res.status(500).json({ status: "fail", message: err.message });
   }
 };
 

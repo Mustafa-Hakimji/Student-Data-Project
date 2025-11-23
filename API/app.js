@@ -31,6 +31,7 @@ app.use("/", require("./router/auth"));
 app.use("/students", require("./router/student"));
 app.use("/classes", require("./router/classes"));
 app.use("/teachers", require("./router/teacher"));
+app.use("/subjects", require("./router/subject"));
 
 // Server Listning PORT
 app.listen(port, () => {

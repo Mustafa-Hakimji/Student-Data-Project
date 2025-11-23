@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const classSchema = new mongoose.Schema({
   name: {
@@ -17,6 +17,11 @@ const classSchema = new mongoose.Schema({
     required: true,
   },
 
+  subjects: {
+    type: [String],
+    required: [true, "A class must have subjects."],
+  },
+
   busFees: {
     type: Number,
     required: true,
@@ -30,4 +35,6 @@ const classSchema = new mongoose.Schema({
   ],
 });
 
-export default mongoose.model("Class", classSchema);
+const Class = mongoose.model("Class", classSchema);
+
+module.exports = Class;

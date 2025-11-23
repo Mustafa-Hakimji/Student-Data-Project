@@ -1,0 +1,12 @@
+.view-contaiuner {
+  padding: 10;
+}
+
+.view-filter-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: aqua;
+  padding: 10;
+}

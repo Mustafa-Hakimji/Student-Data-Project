@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Dashboard from "../pages/AdminPages/Dashboard";
 import ManageStudents from "../pages/AdminPages/Students";
 import { pages } from "../utils/constants/navigation";
-import ViewAndEditStudents from "../pages/AdminPages/Students/screens/ViewAndEdit";
+import ViewAndEditStudents from "../pages/AdminPages/Students/screens/ViewAndEditStudents";
 
 const AdminRoutes = () => {
   return (
