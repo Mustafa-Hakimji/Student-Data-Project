@@ -10,3 +10,8 @@
   background-color: aqua;
   padding: 10;
 }
+.search-dropdown {
+  padding: 20px;
+  width: 50%;
+  align-self: center;
+}

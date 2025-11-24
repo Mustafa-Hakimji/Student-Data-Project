@@ -22,8 +22,6 @@ export const studentSlice = createSlice({
     },
     getStudentsSuccess: (state, action) => {
       state.loading = false;
-
-      console.log("SLOICE LOG STUDENTS --> ", action.payload);
       state.students = action.payload;
     },
     getStudentsFailure: (state, action) => {
