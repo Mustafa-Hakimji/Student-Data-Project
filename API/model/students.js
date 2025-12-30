@@ -16,7 +16,7 @@ const StudentSchema = mongoose.Schema({
     trim: true,
   },
   rollNumber: {
-    type: Number,
+    type: String,
     required: [true, "A student must have a roll number"],
     unique: true,
   },
@@ -26,7 +26,7 @@ const StudentSchema = mongoose.Schema({
     unique: true,
   },
   sssm: {
-    type: Number,
+    type: String,
     required: false,
   },
   attendance: {

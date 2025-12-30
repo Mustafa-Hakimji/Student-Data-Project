@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Modal from "../Modal";
 import Login from "../Login";
-import { LOGIN, LOGOUT } from "../../utils/constants/screenText";
 import { useAppDispatch, useAppSelector } from "../../provider/hooks";
 import { clearUser } from "../../provider/slices/userSlice";
 import { showToast } from "../../utils/customFunctions/toast";
@@ -11,14 +10,9 @@ import LoginOptions from "./components/loginOptions";
 import LogoutOptions from "./components/logoutOptions";
 
 function Navbar() {
-  const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [showLoginModal, setShowLoginModal] = useState(false);
-
-  const hadleNavigation = (path: string) => {
-    navigate(path);
-  };
 
   const handleLogInOutAction = () => {
     if (user?.isLoggedIn) {

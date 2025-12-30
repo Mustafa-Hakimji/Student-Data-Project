@@ -8,3 +8,20 @@ export const filterOptions = [
   { value: "SSSM", title: "sssm" },
   { value: "Pending Fees", title: "pendingFees" },
 ];
+
+export interface StudentFilterType {
+  standard: string;
+  firstName: string;
+  lastName: string;
+  roll: string;
+  adhaar: string;
+  father: string;
+  mother: string;
+  sssm: string;
+  pendingFees: string;
+}
+
+export interface SelectedFilterType {
+  title: string;
+  value: string;
+}

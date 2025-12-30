@@ -17,7 +17,12 @@ const addNewData = async ({ model, data, dupField }) => {
       }
     }
 
-    const addedData = await model.create(data);
+    let addedData;
+    if (dupField[0] === "adhaar") {
+      addedData = await model.create({ ...data, class: data?.className });
+    } else {
+      addedData = await model.create({ data });
+    }
 
     return { data: addedData, result: true };
   } catch (error) {

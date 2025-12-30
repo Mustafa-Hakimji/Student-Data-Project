@@ -35,33 +35,33 @@ const ManageStudents = () => {
         </button>
         <button
           className="feature-buttons btn btn-outline-primary m-2"
-          // onClick={() => {
-          //   handleNavigation(pages.admin.manageStudents);
-          // }}
+          onClick={() => {
+            handleNavigation(pages.admin.addStudent);
+          }}
         >
           {ADD_STUDENT}
         </button>
         <button
           className="feature-buttons btn btn-outline-danger m-2"
-          // onClick={() => {
-          //   handleNavigation(pages.admin.manageStudents);
-          // }}
+          onClick={() => {
+            handleNavigation(pages.admin.deleteStudent);
+          }}
         >
           {DELETE_STUDENT}
         </button>
         <button
           className="feature-buttons btn btn-outline-warning m-2"
-          // onClick={() => {
-          //   handleNavigation(pages.admin.manageStudents);
-          // }}
+          onClick={() => {
+            handleNavigation(pages.admin.updateStudent);
+          }}
         >
           {UPDATE_STUDENT}
         </button>
         <button
           className="feature-buttons btn btn-outline-primary m-2"
-          // onClick={() => {
-          //   handleNavigation(pages.admin.manageStudents);
-          // }}
+          onClick={() => {
+            handleNavigation(pages.admin.promoteStudents);
+          }}
         >
           {PROMOTE_STUDENTS}
         </button>

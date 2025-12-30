@@ -76,7 +76,7 @@ const getStudentByName = async (req, res) => {
 
 const addStudent = async (req, res) => {
   try {
-    const classId = req.body.class;
+    const classId = req.body.className;
 
     // Checking if class exists
     const classExists = await Class.findById(classId);
@@ -94,6 +94,7 @@ const addStudent = async (req, res) => {
       dupField: ["adhaar"],
     });
 
+    console.log({ newStudent });
     // If fields are missing
     if (newStudent?.isFieldMissing) {
       return res

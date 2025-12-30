@@ -6,6 +6,10 @@ export const pages = {
     manageAttendence: "/attendence",
     manageReports: "/reports",
     viewEditStudent: "/view-and-edit-students",
+    addStudent: "/add-student",
+    deleteStudent: "/delete-student",
+    updateStudent: "/update-student",
+    promoteStudents: "/promote-students",
   },
   public: {
     about: "/about",

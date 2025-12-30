@@ -1,13 +1,29 @@
 import "./styles.css";
-import { useAppSelector } from "../../../../../provider/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../provider/hooks";
 import { getClassById } from "../../../../../utils/customFunctions/commonFunctions";
 import { useState } from "react";
-import { filterOptions } from "./types";
-const ViewAndEditStudents = () => {
+import {
+  filterOptions,
+  type SelectedFilterType,
+  type StudentFilterType,
+} from "./types";
+import Modal from "../../../../../components/Modal";
+import ConfirmAlert from "../../../../../components/AlertMessage";
+import { showToast } from "../../../../../utils/customFunctions/toast";
+import { api } from "../../../../../utils/api/apiInstanse";
+import { API_URL } from "../../../../../utils/api/apiUrls";
+import { getStudentsRequest } from "../../../../../provider/slices/studentSlice";
+import FullScreenLoader from "../../../../../components/Loader";
+import StudentListTable from "../../components/StudentListTable";
+const ViewAndEditStudents = ({ isDelete = false }) => {
+  const dispatch = useAppDispatch();
   const students = useAppSelector((state) => state.students.students);
   const { classes } = useAppSelector((state) => state.classes);
 
-  const [filters, setFilters] = useState({
+  const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState<StudentFilterType>({
     standard: "",
     firstName: "",
     lastName: "",
@@ -18,7 +34,15 @@ const ViewAndEditStudents = () => {
     sssm: "",
     pendingFees: "",
   });
-  const [seletedFilter, setSelectedFilter] = useState({ value: "", title: "" });
+
+  const updateFilterValue = (val: string, key: string) => {
+    const newData = { ...filters, [key]: val };
+    setFilters(newData);
+  };
+  const [seletedFilter, setSelectedFilter] = useState<SelectedFilterType>({
+    value: "",
+    title: "",
+  });
 
   const handleFilterSerach = (e: any) => {
     e.preventDefault();
@@ -96,6 +120,49 @@ const ViewAndEditStudents = () => {
     return finalData;
   };
 
+  const handleSelect = (item: string) => {
+    if (selectedStudents.includes(item)) {
+      setSelectedStudents(selectedStudents.filter((adhaar) => adhaar !== item));
+    } else {
+      setSelectedStudents((prev) => [...prev, item]);
+    }
+  };
+
+  const selectedFilter = `${
+    seletedFilter?.title ? filters[seletedFilter?.title] : ""
+  }`;
+
+  const handleDeleteAcion = async () => {
+    try {
+      const data = {
+        adhaar: selectedStudents,
+      };
+      setLoading(true);
+      const response = await api.delete(API_URL.students, {
+        data,
+      });
+      if (response.data.status === "success") {
+        showToast({ text: response.data.message });
+        setSelectedStudents([]);
+      }
+      dispatch(getStudentsRequest());
+    } catch (error) {
+      console.log("ERROR handleDeleteAcion --> ", error);
+    } finally {
+      setShowDeleteAlert(false);
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteClick = () => {
+    if (selectedStudents.length <= 0) {
+      showToast({ text: "Please select students to delete." });
+      return;
+    }
+
+    setShowDeleteAlert(true);
+  };
+
   return (
     <div className="view-contaiuner">
       <div className="input-group mb-3 search-dropdown">
@@ -127,10 +194,26 @@ const ViewAndEditStudents = () => {
           className="form-control"
           aria-label="Text input with dropdown button"
           onChange={(e) => handleFilterSerach(e)}
-          value={`${filters[seletedFilter?.title] || ""}`}
+          value={selectedFilter}
         />
       </div>
-      <table className="table table-dark table-hover">
+      <div className="delete-multiple">
+        <h4 className="">Results: {filteredData().length}</h4>
+        {isDelete && (
+          <button
+            className="btn btn-outline-danger"
+            onClick={handleDeleteClick}
+          >
+            Delete{` ${selectedStudents?.length} students`}
+          </button>
+        )}
+      </div>
+      <StudentListTable
+        data={filteredData()}
+        classes={classes}
+        setFilters={updateFilterValue}
+      />
+      {/* <table className="table table-light table-hover">
         <thead>
           <tr>
             <th scope="col">S.No</th>
@@ -147,6 +230,19 @@ const ViewAndEditStudents = () => {
                   Class
                 </button>
                 <ul className="dropdown-menu">
+                  <li
+                    className="dropdown-item"
+                    onClick={() => {
+                      setFilters((prev) => {
+                        return {
+                          ...prev,
+                          standard: "",
+                        };
+                      });
+                    }}
+                  >
+                    All
+                  </li>
                   {classes.map((item, index) => {
                     return (
                       <li
@@ -182,8 +278,11 @@ const ViewAndEditStudents = () => {
           {filteredData()?.length > 0 &&
             filteredData()?.map((item, index) => {
               return (
-                <tr key={index}>
-                  <td>{index + 1}</td>
+                <tr onClick={() => handleSelect(item?.adhaar)} key={index}>
+                  <td>
+                    {index + 1}{" "}
+                    {selectedStudents.includes(item?.adhaar) ? "✅" : ""}
+                  </td>
                   <td>{item?.firstName}</td>
                   <td>{item?.lastName}</td>
                   <td>{getClassById(item?.class, classes)?.name}</td>
@@ -198,12 +297,26 @@ const ViewAndEditStudents = () => {
               );
             })}
         </tbody>
-      </table>
+      </table> */}
       {filteredData().length <= 0 && (
         <div className="d-flex align-items-center justify-content-center mt-5">
-          <h3>No data found as per your search.</h3>
+          <h3>No data found.</h3>
         </div>
       )}
+
+      {showDeleteAlert && (
+        <Modal open={showDeleteAlert} setOpen={setShowDeleteAlert}>
+          <ConfirmAlert
+            message="Are you sure you want to delete students?"
+            title="Delete Alert"
+            onCancel={() => {
+              setShowDeleteAlert(false);
+            }}
+            onConfirm={handleDeleteAcion}
+          />
+        </Modal>
+      )}
+      <FullScreenLoader show={loading} />
     </div>
   );
 };

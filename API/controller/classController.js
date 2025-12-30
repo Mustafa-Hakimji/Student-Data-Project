@@ -5,10 +5,12 @@ const Student = require("../model/students.js");
 const createClass = async (req, res) => {
   try {
     const isClassExist = await Class.find({ name: req.body.name });
-    if (isClassExist) {
-      return res
-        .status(400)
-        .json({ status: "failure", message: "Class already exist." });
+    if (isClassExist?.length > 0) {
+      return res.status(400).json({
+        status: "failure",
+        message: "Class already exist.",
+        class: isClassExist,
+      });
     }
 
     const newClass = await Class.create(req.body);

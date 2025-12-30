@@ -14,6 +14,7 @@ import {
   USER_ADDRESS,
   USER_PASSWORD,
 } from "../../utils/constants/screenText";
+import { storageKeys } from "../../utils/constants/localStorage";
 
 const Login = ({ setOpen, onClose = () => {} }: LoginType) => {
   const dispatch = useAppDispatch();
@@ -35,6 +36,7 @@ const Login = ({ setOpen, onClose = () => {} }: LoginType) => {
 
     const data = await loginUser({ email, password, setLoading });
     if (data?.status === API_STATUS.SUCCESS) {
+      localStorage.setItem(storageKeys.userData, JSON.stringify(data?.user));
       dispatch(setUser(data?.user));
       close();
       showToast({ text: "User login successfull" });

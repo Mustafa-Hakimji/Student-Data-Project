@@ -3,16 +3,20 @@ import Dashboard from "../pages/AdminPages/Dashboard";
 import ManageStudents from "../pages/AdminPages/Students";
 import { pages } from "../utils/constants/navigation";
 import ViewAndEditStudents from "../pages/AdminPages/Students/screens/ViewAndEditStudents";
+import AddStudent from "../pages/AdminPages/Students/screens/AddStudents";
+import DeleteStudent from "../pages/AdminPages/Students/screens/DeleteStudent";
 
 const AdminRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
       <Route path={pages.admin.manageStudents} element={<ManageStudents />} />
+      <Route path={pages.admin.addStudent} element={<AddStudent />} />
       <Route
         path={pages.admin.viewEditStudent}
         element={<ViewAndEditStudents />}
       />
+      <Route path={pages.admin.deleteStudent} element={<DeleteStudent />} />
     </Routes>
   );
 };
