@@ -5,6 +5,7 @@ import { pages } from "../utils/constants/navigation";
 import ViewAndEditStudents from "../pages/AdminPages/Students/screens/ViewAndEditStudents";
 import AddStudent from "../pages/AdminPages/Students/screens/AddStudents";
 import DeleteStudent from "../pages/AdminPages/Students/screens/DeleteStudent";
+import UpdateStudent from "../pages/AdminPages/Students/screens/UpdateStudent";
 
 const AdminRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const AdminRoutes = () => {
         element={<ViewAndEditStudents />}
       />
       <Route path={pages.admin.deleteStudent} element={<DeleteStudent />} />
+      <Route path={pages.admin.updateStudent} element={<UpdateStudent />} />
     </Routes>
   );
 };

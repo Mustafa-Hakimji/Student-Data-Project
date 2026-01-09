@@ -7,7 +7,6 @@ const StudentListTable = ({
   classes,
   selectedStudents,
   setSelectedStudents,
-  handleDeleteAcion = () => {},
 }: StudentTableProps) => {
   return (
     <table className="table table-light table-hover">
