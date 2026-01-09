@@ -3,7 +3,7 @@ export interface StudentType {
   firstName: string;
   lastName: string;
   rollNumber: string;
-  adhaar: number;
+  adhaar: string;
   sssm: string;
   attendance: string;
   class: string;
@@ -36,4 +36,7 @@ export interface StudentTableProps {
   data: StudentType[];
   setFilters: (arg: string, arg2: string) => void;
   classes: ClassesType[];
+  selectedStudents: string[];
+  setSelectedStudents: (arg: string) => void;
+  handleDeleteAcion?: () => void;
 }

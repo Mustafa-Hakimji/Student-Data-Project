@@ -22,6 +22,6 @@ export interface StudentFilterType {
 }
 
 export interface SelectedFilterType {
-  title: string;
+  title: StudentFilterType;
   value: string;
 }

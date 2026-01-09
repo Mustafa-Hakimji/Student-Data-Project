@@ -1,17 +1,14 @@
-import React, { useState } from "react";
 import type { StudentType, StudentTableProps } from "../types";
 import { getClassById } from "../../../../utils/customFunctions/commonFunctions";
 
-const StudentListTable = ({ data, setFilters, classes }: StudentTableProps) => {
-  const [selectedStudents, setSelectedStudents] = useState<number[]>([]);
-
-  const handleSelect = (item: number) => {
-    if (selectedStudents.includes(item)) {
-      setSelectedStudents(selectedStudents.filter((adhaar) => adhaar !== item));
-    } else {
-      setSelectedStudents((prev) => [...prev, item]);
-    }
-  };
+const StudentListTable = ({
+  data,
+  setFilters,
+  classes,
+  selectedStudents,
+  setSelectedStudents,
+  handleDeleteAcion = () => {},
+}: StudentTableProps) => {
   return (
     <table className="table table-light table-hover">
       <thead>
@@ -68,7 +65,7 @@ const StudentListTable = ({ data, setFilters, classes }: StudentTableProps) => {
         {data?.length > 0 &&
           data?.map((item: StudentType, index) => {
             return (
-              <tr onClick={() => handleSelect(item?.adhaar)} key={index}>
+              <tr onClick={() => setSelectedStudents(item?.adhaar)} key={index}>
                 <td>
                   {index + 1}{" "}
                   {selectedStudents.includes(item?.adhaar) ? "✅" : ""}
