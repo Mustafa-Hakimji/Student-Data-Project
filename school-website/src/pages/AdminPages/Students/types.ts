@@ -33,10 +33,26 @@ export interface ClassesType {
 }
 
 export interface StudentTableProps {
-  data: StudentType[];
-  setFilters: (arg: string, arg2: string) => void;
-  classes: ClassesType[];
+  data?: StudentType[];
+  setFilters?: (arg: string, arg2: string) => void;
+  classes?: ClassesType[];
+  setSelectedStudents?: (arg: []) => void;
   selectedStudents: string[];
-  setSelectedStudents: (arg: string) => void;
   handleDeleteAcion?: () => void;
+  actionType?: ActionsTypes;
+  handleClick?: () => void;
+  handleUpdateClick?: (arg: StudentType) => void;
+  updateSelectedStudent?: (arg: string) => void;
+  handleButtonClick?: () => void;
+  loading?: boolean;
 }
+
+export const ActionsTypes = {
+  view: "view",
+  add: "add",
+  delete: "delete",
+  update: "update",
+  promote: "promote",
+} as const;
+
+export type ActionsTypes = (typeof ActionsTypes)[keyof typeof ActionsTypes];

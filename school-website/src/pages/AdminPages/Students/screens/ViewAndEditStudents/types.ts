@@ -1,3 +1,5 @@
+import type { ActionsTypes, StudentType } from "../../types";
+
 export const filterOptions = [
   { value: "First Name", title: "firstName" },
   { value: "Last Name", title: "lastName" },
@@ -8,6 +10,13 @@ export const filterOptions = [
   { value: "SSSM", title: "sssm" },
   { value: "Pending Fees", title: "pendingFees" },
 ];
+
+// export interface StudentTableProps {
+//   actionType: ActionsTypes;
+//   selectedStudents?: string[];
+//   handleClick?: (arg: StudentType) => void;
+//   handleUpdateClick?: (arg: StudentType) => void;
+// }
 
 export interface StudentFilterType {
   standard: string;
@@ -22,6 +31,6 @@ export interface StudentFilterType {
 }
 
 export interface SelectedFilterType {
-  title: StudentFilterType;
+  title: string;
   value: string;
 }

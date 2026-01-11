@@ -1,25 +1,26 @@
 import "./styles.css";
-import { useAppDispatch, useAppSelector } from "../../../../../provider/hooks";
+import { useAppSelector } from "../../../../../provider/hooks";
 import { useState, type ChangeEvent } from "react";
 import {
   filterOptions,
   type SelectedFilterType,
   type StudentFilterType,
 } from "./types";
-import { showToast } from "../../../../../utils/customFunctions/toast";
-import { api } from "../../../../../utils/api/apiInstanse";
-import { API_URL } from "../../../../../utils/api/apiUrls";
-import { getStudentsRequest } from "../../../../../provider/slices/studentSlice";
 import FullScreenLoader from "../../../../../components/Loader";
 import StudentListTable from "../../components/StudentListTable";
+import ActionWiseButton from "./components/actionWiseButton";
+import type { StudentTableProps } from "../../types";
 
-const ViewAndEditStudents = ({ isDelete = false }) => {
-  const dispatch = useAppDispatch();
+const ViewAndEditStudents = ({
+  actionType,
+  selectedStudents,
+  updateSelectedStudent = () => {},
+  handleButtonClick = () => {},
+  loading,
+}: StudentTableProps) => {
   const students = useAppSelector((state) => state.students.students);
   const { classes } = useAppSelector((state) => state.classes);
 
-  const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<StudentFilterType | any>({
     standard: "",
     firstName: "",
@@ -31,14 +32,6 @@ const ViewAndEditStudents = ({ isDelete = false }) => {
     sssm: "",
     pendingFees: "",
   });
-
-  const updateSelectedStuidents = (item: string) => {
-    if (selectedStudents.includes(item)) {
-      setSelectedStudents(selectedStudents.filter((adhaar) => adhaar !== item));
-    } else {
-      setSelectedStudents((prev) => [...prev, item]);
-    }
-  };
 
   const updateFilterValue = (val: string, key: string) => {
     const newData = { ...filters, [key]: val };
@@ -129,36 +122,6 @@ const ViewAndEditStudents = ({ isDelete = false }) => {
     seletedFilter?.title ? filters[seletedFilter?.title] : ""
   }`;
 
-  const handleDeleteAcion = async () => {
-    try {
-      const data = {
-        adhaar: selectedStudents,
-      };
-      setLoading(true);
-      const response = await api.delete(API_URL.students, {
-        data,
-      });
-      if (response.data.status === "success") {
-        showToast({ text: response.data.message });
-        setSelectedStudents([]);
-      }
-      dispatch(getStudentsRequest());
-    } catch (error) {
-      console.log("ERROR handleDeleteAcion --> ", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDeleteClick = () => {
-    if (selectedStudents.length <= 0) {
-      showToast({ text: "Please select students to delete." });
-      return;
-    } else {
-      handleDeleteAcion();
-    }
-  };
-
   return (
     <div className="view-contaiuner">
       <div className="input-group mb-3 search-dropdown">
@@ -195,24 +158,21 @@ const ViewAndEditStudents = ({ isDelete = false }) => {
       </div>
       <div className="delete-multiple">
         <h4 className="">Results: {filteredData().length}</h4>
-        {isDelete && (
-          <button
-            className="btn btn-outline-danger"
-            onClick={handleDeleteClick}
-          >
-            Delete{` ${selectedStudents?.length} students`}
-          </button>
-        )}
+        <ActionWiseButton
+          actionType={actionType}
+          handleClick={handleButtonClick}
+          selectedStudents={selectedStudents}
+        />
       </div>
       <StudentListTable
         data={filteredData()}
         classes={classes}
         setFilters={updateFilterValue}
         selectedStudents={selectedStudents}
-        setSelectedStudents={updateSelectedStuidents}
+        updateSelectedStudent={updateSelectedStudent}
       />
 
-      <FullScreenLoader show={loading} />
+      {loading && <FullScreenLoader show={loading} />}
     </div>
   );
 };

@@ -3,10 +3,10 @@ import { getClassById } from "../../../../utils/customFunctions/commonFunctions"
 
 const StudentListTable = ({
   data,
-  setFilters,
+  setFilters = () => {},
   classes,
   selectedStudents,
-  setSelectedStudents,
+  updateSelectedStudent = () => {},
 }: StudentTableProps) => {
   return (
     <table className="table table-light table-hover">
@@ -34,7 +34,7 @@ const StudentListTable = ({
                 >
                   All
                 </li>
-                {classes.map((item, index) => {
+                {classes?.map((item, index) => {
                   return (
                     <li
                       className="dropdown-item"
@@ -61,17 +61,21 @@ const StudentListTable = ({
       </thead>
 
       <tbody>
-        {data?.length > 0 &&
+        {data &&
+          data?.length > 0 &&
           data?.map((item: StudentType, index) => {
             return (
-              <tr onClick={() => setSelectedStudents(item?.adhaar)} key={index}>
+              <tr
+                onClick={() => updateSelectedStudent(item?.adhaar)}
+                key={index}
+              >
                 <td>
                   {index + 1}{" "}
-                  {selectedStudents.includes(item?.adhaar) ? "✅" : ""}
+                  {selectedStudents?.includes(item?.adhaar) ? "✅" : ""}
                 </td>
                 <td>{item?.firstName}</td>
                 <td>{item?.lastName}</td>
-                <td>{getClassById(item?.class, classes)?.name}</td>
+                <td>{getClassById(item?.class, classes || [])?.name}</td>
                 <td>{item?.rollNumber}</td>
                 <td>{item?.adhaar}</td>
                 <td>{item?.sssm}</td>

@@ -1,10 +1,15 @@
-import React from "react";
+import ViewAndEditStudents from "../ViewAndEditStudents";
+import { ActionsTypes } from "../../types";
+import { useState } from "react";
 
 const UpdateStudent = () => {
+  const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   return (
-    <div>
-      <h1>Update Student</h1>
-    </div>
+    <ViewAndEditStudents
+      actionType={ActionsTypes.update}
+      selectedStudents={selectedStudents}
+      setSelectedStudents={setSelectedStudents}
+    />
   );
 };
 
