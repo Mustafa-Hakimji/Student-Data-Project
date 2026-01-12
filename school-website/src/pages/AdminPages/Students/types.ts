@@ -37,7 +37,7 @@ export interface StudentTableProps {
   setFilters?: (arg: string, arg2: string) => void;
   classes?: ClassesType[];
   setSelectedStudents?: (arg: []) => void;
-  selectedStudents: string[];
+  selectedStudents?: string[];
   handleDeleteAcion?: () => void;
   actionType?: ActionsTypes;
   handleClick?: () => void;
