@@ -5,4 +5,5 @@ export interface UpdateFormTypes {
   studentData: () => StudentType;
   loading?: boolean;
   setLoading: (arg: boolean) => void;
+  clearSelectedStudent: () => void;
 }

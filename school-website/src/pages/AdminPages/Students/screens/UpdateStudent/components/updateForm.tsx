@@ -38,8 +38,8 @@ const initialState: StudentType = {
 const UpdateForm = ({
   onClose = () => {},
   studentData,
-  loading,
   setLoading,
+  clearSelectedStudent,
 }: UpdateFormTypes) => {
   const classes = useAppSelector((state) => state.classes.classes);
   const user = useAppSelector((state) => state.user.user);
@@ -72,6 +72,7 @@ const UpdateForm = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
     const {
       firstName,
       lastName,
@@ -115,7 +116,7 @@ const UpdateForm = ({
         rollNumber,
         adhaar,
         sssm,
-        className,
+        class: className,
         feesAmount,
         pendingFees,
         fathersName,
@@ -129,18 +130,30 @@ const UpdateForm = ({
       };
       setLoading(true);
 
-      const response = await api.post(API_URL.students, requestBody);
+      const response = await api.patch(API_URL.students, requestBody);
       if (response.data.status === "success") {
-        showToast({ text: response?.data?.message });
-        resetStates();
         dispatch(getStudentsRequest());
+        resetStates();
+        showToast({ text: response?.data?.message });
       }
+      clearSelectedStudent();
+      onClose();
     } catch (error) {
       console.log("Add student error --> ", error);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const data = studentData();
+    if (data) {
+      setForm({
+        ...data,
+        className: data.class,
+      });
+    }
+  }, [studentData]);
 
   return (
     <div className="sf-modal-overlay" onClick={onClose}>
@@ -304,7 +317,7 @@ const UpdateForm = ({
               Reset
             </button>
             <button type="submit" className="sf-btn primary">
-              Save Student
+              Update Student
             </button>
           </div>
         </form>

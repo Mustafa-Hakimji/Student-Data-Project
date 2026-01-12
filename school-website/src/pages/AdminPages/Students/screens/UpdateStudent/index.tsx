@@ -3,6 +3,8 @@ import { ActionsTypes } from "../../types";
 import { useState } from "react";
 import UpdateForm from "./components/updateForm";
 import { useAppSelector } from "../../../../../provider/hooks";
+import FullScreenLoader from "../../../../../components/Loader";
+import { showToast } from "../../../../../utils/customFunctions/toast";
 
 const UpdateStudent = () => {
   const students = useAppSelector((state) => state.students.students);
@@ -15,6 +17,10 @@ const UpdateStudent = () => {
   };
 
   const handleButtonClick = () => {
+    if (selectedStudents.length <= 0) {
+      showToast({ text: "Please select student to update." });
+      return;
+    }
     setShowUpdateForm(true);
   };
 
@@ -24,6 +30,11 @@ const UpdateStudent = () => {
     );
     return filteredData[0];
   };
+
+  const removeSelected = () => {
+    setSelectedStudents([]);
+  };
+
   return (
     <>
       <ViewAndEditStudents
@@ -39,8 +50,10 @@ const UpdateStudent = () => {
           studentData={getSelectedStudent}
           loading={loading}
           setLoading={setLoading}
+          clearSelectedStudent={removeSelected}
         />
       )}
+      {loading && <FullScreenLoader show={loading} />}
     </>
   );
 };

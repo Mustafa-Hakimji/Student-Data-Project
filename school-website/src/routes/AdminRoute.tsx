@@ -6,6 +6,7 @@ import ViewAndEditStudents from "../pages/AdminPages/Students/screens/ViewAndEdi
 import AddStudent from "../pages/AdminPages/Students/screens/AddStudents";
 import DeleteStudent from "../pages/AdminPages/Students/screens/DeleteStudent";
 import UpdateStudent from "../pages/AdminPages/Students/screens/UpdateStudent";
+import PromoteStudents from "../pages/AdminPages/Students/screens/PromoteStudent";
 
 const AdminRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const AdminRoutes = () => {
       />
       <Route path={pages.admin.deleteStudent} element={<DeleteStudent />} />
       <Route path={pages.admin.updateStudent} element={<UpdateStudent />} />
+      <Route path={pages.admin.promoteStudents} element={<PromoteStudents />} />
     </Routes>
   );
 };
