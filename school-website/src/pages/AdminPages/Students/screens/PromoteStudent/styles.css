@@ -1,0 +1,15 @@
+.dropdown-container {
+  width: 30%;
+}
+
+.classes-select-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transfer-image {
+  height: 50px;
+  width: 100px;
+}
