@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { storageKeys } from "../../utils/constants/localStorage";
 
 interface StudentState {
   students: any[];
@@ -23,15 +24,30 @@ export const studentSlice = createSlice({
     getStudentsSuccess: (state, action) => {
       state.loading = false;
       state.students = action.payload;
+
+      localStorage.setItem(
+        storageKeys.students,
+        JSON.stringify(action.payload)
+      );
     },
     getStudentsFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
+
+    setLocalStudent: (state, action) => {
+      state.students = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
-export const { getStudentsRequest, getStudentsSuccess, getStudentsFailure } =
-  studentSlice.actions;
+export const {
+  getStudentsRequest,
+  getStudentsSuccess,
+  getStudentsFailure,
+  setLocalStudent,
+} = studentSlice.actions;
 
 export default studentSlice.reducer;

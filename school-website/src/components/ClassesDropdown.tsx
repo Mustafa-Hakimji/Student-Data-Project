@@ -1,4 +1,3 @@
-import React from "react";
 import type { ClassesType } from "../pages/AdminPages/Students/types";
 
 interface ClassDropdownProps {
@@ -6,6 +5,7 @@ interface ClassDropdownProps {
   setSelectedClass: (arg: string) => void;
   selectedClass: string;
   title: string;
+  updateAction?: () => void;
 }
 
 const ClassesDropdown = ({
@@ -13,6 +13,7 @@ const ClassesDropdown = ({
   setSelectedClass,
   selectedClass,
   title,
+  updateAction = () => {},
 }: ClassDropdownProps) => {
   return (
     <div className="input-group mb-3">
@@ -21,7 +22,10 @@ const ClassesDropdown = ({
         className="form-select"
         id="inputGroupSelect01"
         value={selectedClass}
-        onChange={(e) => setSelectedClass(e.target.value)}
+        onChange={(e) => {
+          setSelectedClass(e.target.value);
+          updateAction();
+        }}
       >
         <option value="">Select Class</option>
         {classes?.map((item) => (
