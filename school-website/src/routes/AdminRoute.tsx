@@ -9,6 +9,8 @@ import UpdateStudent from "../pages/AdminPages/Students/screens/UpdateStudent";
 import PromoteStudents from "../pages/AdminPages/Students/screens/PromoteStudent";
 import AttenceScreen from "../pages/AdminPages/Attendence";
 import ClassesScreen from "../pages/AdminPages/Classes";
+import TakeAttendence from "../pages/AdminPages/Attendence/screens/Take";
+import ViewAttendence from "../pages/AdminPages/Attendence/screens/View";
 
 const AdminRoutes = () => {
   return (
@@ -25,6 +27,8 @@ const AdminRoutes = () => {
       <Route path={pages.admin.promoteStudents} element={<PromoteStudents />} />
       <Route path={pages.admin.manageAttendence} element={<AttenceScreen />} />
       <Route path={pages.admin.manageClasses} element={<ClassesScreen />} />
+      <Route path={pages.admin.takeAttendence} element={<TakeAttendence />} />
+      <Route path={pages.admin.viewAttendence} element={<ViewAttendence />} />
     </Routes>
   );
 };

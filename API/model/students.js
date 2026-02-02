@@ -30,7 +30,12 @@ const StudentSchema = mongoose.Schema({
     required: false,
   },
   attendance: {
-    type: [String],
+    type: [
+      {
+        date: String,
+        status: String,
+      },
+    ],
   },
   class: {
     type: mongoose.Schema.Types.ObjectId,

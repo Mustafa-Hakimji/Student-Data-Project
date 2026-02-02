@@ -7,6 +7,8 @@ const {
   deleteStudent,
   updateStudent,
   promoteStudentsToNextClass,
+  updateAttendance,
+  updateBulkAttendance,
 } = require("../controller/studentController");
 const router = express.Router();
 
@@ -21,5 +23,7 @@ router.delete("/", deleteStudent);
 router.patch("/", updateStudent);
 
 router.post("/promote", promoteStudentsToNextClass);
+router.post("/attendence", updateAttendance);
+router.post("/attendence/bulk", updateBulkAttendance);
 
 module.exports = router;

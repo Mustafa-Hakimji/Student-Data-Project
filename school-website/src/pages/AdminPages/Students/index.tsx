@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ADD_STUDENT,
   DELETE_STUDENT,

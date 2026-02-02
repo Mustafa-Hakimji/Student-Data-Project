@@ -279,6 +279,115 @@ const promoteStudentsToNextClass = async (req, res) => {
   }
 };
 
+const updateAttendance = async (req, res) => {
+  try {
+    const { adhaar, date, status } = req.body;
+
+    if (!adhaar || !date || !status) {
+      return res.status(400).json({ message: "Missing fields" });
+    }
+
+    // First try to update existing date
+    const updated = await Student.findOneAndUpdate(
+      { adhaar, "attendance.date": date },
+      {
+        $set: {
+          "attendance.$.status": status,
+          updatedAt: new Date().toISOString(),
+        },
+      },
+      { new: true }
+    );
+
+    // If found and updated, return
+    if (updated) {
+      return res.status(200).json({
+        status: "success",
+        message: "Attendance updated",
+        data: updated,
+      });
+    }
+
+    // Else push new attendance
+    const pushed = await Student.findOneAndUpdate(
+      { adhaar },
+      {
+        $push: { attendance: { date, status } },
+        $set: { updatedAt: new Date().toISOString() },
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      status: "success",
+      message: "Attendance added",
+      data: pushed,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: "failure",
+      message: "Attendance update failed",
+      error: err.message,
+    });
+  }
+};
+
+const updateBulkAttendance = async (req, res) => {
+  try {
+    const { records } = req.body; // [{adhaar, date, status}]
+
+    const ops = records.map((r) => ({
+      updateOne: {
+        filter: { adhaar: r.adhaar },
+        update: [
+          {
+            $set: {
+              attendance: {
+                $cond: [
+                  { $in: [r.date, "$attendance.date"] },
+                  {
+                    $map: {
+                      input: "$attendance",
+                      as: "a",
+                      in: {
+                        $cond: [
+                          { $eq: ["$$a.date", r.date] },
+                          { date: r.date, status: r.status },
+                          "$$a",
+                        ],
+                      },
+                    },
+                  },
+                  {
+                    $concatArrays: [
+                      "$attendance",
+                      [{ date: r.date, status: r.status }],
+                    ],
+                  },
+                ],
+              },
+              updatedAt: new Date().toISOString(),
+            },
+          },
+        ],
+      },
+    }));
+
+    const result = await Student.bulkWrite(ops);
+
+    return res.json({
+      status: "success",
+      message: "Attendance replaced or added correctly",
+      result,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: "failure",
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
   getStudentByName,
   getAllStudents,
@@ -286,4 +395,6 @@ module.exports = {
   deleteStudent,
   updateStudent,
   promoteStudentsToNextClass,
+  updateAttendance,
+  updateBulkAttendance,
 };

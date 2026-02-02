@@ -10,6 +10,10 @@ export const pages = {
     deleteStudent: "/delete-student",
     updateStudent: "/update-student",
     promoteStudents: "/promote-students",
+
+    //Attendence routes
+    takeAttendence: "/take-attendence",
+    viewAttendence: "/view-attendence",
   },
   public: {
     about: "/about",

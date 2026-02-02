@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "../Modal";
 import Login from "../Login";
 import { useAppDispatch, useAppSelector } from "../../provider/hooks";
@@ -8,18 +8,29 @@ import { showToast } from "../../utils/customFunctions/toast";
 import { USER_LOGOUT_SUCCESS } from "../../utils/constants/messages";
 import LoginOptions from "./components/loginOptions";
 import LogoutOptions from "./components/logoutOptions";
+import { storageKeys } from "../../utils/constants/localStorage";
 
 function Navbar() {
+  const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const handleLogInOutAction = () => {
-    if (user?.isLoggedIn) {
-      dispatch(clearUser());
-      showToast({ text: USER_LOGOUT_SUCCESS });
-    } else {
-      setShowLoginModal(true);
+    try {
+      if (user?.isLoggedIn) {
+        dispatch(clearUser());
+        localStorage.removeItem(storageKeys.classes);
+        localStorage.removeItem(storageKeys.students);
+        localStorage.removeItem(storageKeys.userData);
+        navigate("/");
+
+        showToast({ text: USER_LOGOUT_SUCCESS });
+      } else {
+        setShowLoginModal(true);
+      }
+    } catch (error) {
+      showToast({ text: "Some error occured" });
     }
   };
 

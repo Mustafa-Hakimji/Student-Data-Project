@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 import { useAppDispatch, useAppSelector } from "../../../../provider/hooks";
 import ClassesDropdown from "../../../../components/ClassesDropdown";
@@ -8,6 +8,7 @@ import { API_URL } from "../../../../utils/api/apiUrls";
 import FullScreenLoader from "../../../../components/Loader";
 import { showToast } from "../../../../utils/customFunctions/toast";
 import { getStudentsRequest } from "../../../../provider/slices/studentSlice";
+import DatePicker from "../../../../components/DatePicker";
 
 const AttendenceTable = () => {
   const dispatch = useAppDispatch();
@@ -20,44 +21,27 @@ const AttendenceTable = () => {
   const [loading, setLoading] = useState(false);
   const [localAttendanceData, setLocalAttendanceData] = useState<any>({});
 
-  useEffect(() => {
-    setStudentsData(
-      students.filter((student) => student.class === selectedClass)
-    );
-  }, [selectedClass]);
-
-  const getCurrentMonthTillToday = () => {
-    const startOfMonth = moment().startOf("month");
-    const today = moment();
-    const result = [];
-
-    let current = startOfMonth.clone();
-
-    while (current.isSameOrBefore(today, "day")) {
-      result.push({
-        date: current.format("YYYY-MM-DD"),
-        day: current.format("dddd"),
-        month: current.format("MMM"), // short month name
-      });
-      current.add(1, "day");
-    }
-
-    return result;
-  };
-
-  const datesData = getCurrentMonthTillToday();
+  const showTableData = selectedClass && selectedDate;
 
   const getFormattedDate = () => {
-    const selectedDateIndex = parseInt(selectedDate.split("|")[0], 10);
-    return datesData[selectedDateIndex] || {};
+    if (!selectedDate) return null;
+
+    const mDate = moment(selectedDate, "YYYY-MM-DD");
+
+    return {
+      date: mDate.format("YYYY-MM-DD"),
+      day: mDate.format("dddd"),
+      month: mDate.format("MMMM"),
+      display: mDate.format("DD MMM YYYY"),
+    };
   };
 
   const markAbsentPresent = async (adhaar: string, status: string) => {
-    const date = `${getFormattedDate().date}|${getFormattedDate().day}|${
-      getFormattedDate().month
+    const date = `${getFormattedDate()?.date}|${getFormattedDate()?.day}|${
+      getFormattedDate()?.month
     }`;
 
-    const isToday = moment().format("YYYY-MM-DD") === getFormattedDate().date;
+    const isToday = moment().format("YYYY-MM-DD") === getFormattedDate()?.date;
 
     if (!isToday) {
       showToast({ text: "You can only mark attendence for today." });
@@ -117,16 +101,17 @@ const AttendenceTable = () => {
       setLoading(true);
       const records = [];
 
+      if (isMissingStudentAttendance()) {
+        showToast({ text: "Please mark attendence for all students." });
+        return;
+      }
+
       for (const key of Object.keys(localAttendanceData)) {
         records.push({
           adhaar: key,
           date: localAttendanceData[key].date,
           status: localAttendanceData[key].status,
         });
-      }
-      if (isMissingStudentAttendance()) {
-        showToast({ text: "Please mark attendence for all students." });
-        return;
       }
 
       const response = await api.post(API_URL.attendenceBulk, {
@@ -135,6 +120,7 @@ const AttendenceTable = () => {
 
       if (response.data?.status === "success") {
         dispatch(getStudentsRequest());
+
         setLocalAttendanceData({});
         showToast({ text: "Attendance marked successfully." });
       } else {
@@ -159,36 +145,44 @@ const AttendenceTable = () => {
     }
   };
 
+  useEffect(() => {
+    setStudentsData(
+      students.filter((student) => student.class === selectedClass)
+    );
+  }, [selectedClass, students]);
   return (
     <>
       <div className="mt-4 mx-4 mb-2">
-        <ClassesDropdown
-          classes={classes}
-          selectedClass={selectedClass}
-          setSelectedClass={setSelectedClass}
-          title="Select Class to take attendence"
-          updateAction={handleDateChamge}
-        />
+        <div className="row g-3">
+          <div className="col-md-6">
+            <ClassesDropdown
+              classes={classes}
+              selectedClass={selectedClass}
+              setSelectedClass={setSelectedClass}
+              title="Select Class"
+              updateAction={handleDateChamge}
+            />
+          </div>
+
+          <div className="col-md-6">
+            <DatePicker
+              title="Select Date"
+              value={selectedDate}
+              onChange={setSelectedDate}
+              max={moment().format("YYYY-MM-DD")}
+            />
+          </div>
+        </div>
       </div>
-      <div className="mt-4 mx-4 mb-2">
-        <CustomDropdown
-          selectedItem={selectedDate}
-          setSelectedItem={setSelectedDate}
-          title="Select Date"
-          data={datesData.map(
-            (item, index) => ` ${index}|${item.month} ${item.day} ${item.date}`
-          )}
-          subTitle="Select Date"
-          onChange={handleDateChamge}
-        />
-      </div>
-      <h4 className="mx-4">
-        Remaining Students to mark attendence:{" "}
-        {getremainingStudentsToMarkAttendance()}
-      </h4>
+      {showTableData && (
+        <h4 className="mx-4">
+          Remaining Students to mark attendence:{" "}
+          {getremainingStudentsToMarkAttendance()}
+        </h4>
+      )}
 
       <div className="col-8">
-        {selectedClass && selectedDate && (
+        {showTableData && (
           <table className="table table-striped mt-4 mx-4">
             <thead>
               <tr>
@@ -202,9 +196,9 @@ const AttendenceTable = () => {
             </thead>
             <tbody>
               {studentsData?.map((student, index) => {
-                const date = `${getFormattedDate().date}|${
-                  getFormattedDate().day
-                }|${getFormattedDate().month}`;
+                const date = `${getFormattedDate()?.date}|${
+                  getFormattedDate()?.day
+                }|${getFormattedDate()?.month}`;
 
                 const attendanceStatus = localAttendanceData[student.adhaar];
 
@@ -233,8 +227,8 @@ const AttendenceTable = () => {
                   <tr key={index}>
                     <th scope="row">{student?.firstName}</th>
                     <th scope="row">{student.lastName}</th>
-                    <th scope="row">{`${getFormattedDate().date}`}</th>
-                    <th scope="row">{`${getFormattedDate().day}`}</th>
+                    <th scope="row">{`${getFormattedDate()?.date}`}</th>
+                    <th scope="row">{`${getFormattedDate()?.day}`}</th>
                     <th scope="row">
                       <button
                         className={`btn ${presentClass}`}
@@ -261,12 +255,14 @@ const AttendenceTable = () => {
             </tbody>
           </table>
         )}
-        <button
-          className="btn btn-primary mx-4 mb-2"
-          onClick={submitAttendence}
-        >
-          Submit Attendence
-        </button>
+        {showTableData && (
+          <button
+            className="btn btn-primary mx-4 mb-2"
+            onClick={submitAttendence}
+          >
+            Submit Attendence
+          </button>
+        )}
       </div>
       {loading && <FullScreenLoader show={loading} />}
     </>

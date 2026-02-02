@@ -24,3 +24,18 @@ export const validateNumbers = (number: number, length: number) => {
 export const generateRandomNumbers = (value: number) => {
   return Math.round(Math.random() * value);
 };
+
+export const capitaliseFirst = (char: string) => {
+  if (char.length > 0) {
+    let capitalise = "";
+    for (let i = 0; i < char.length; i++) {
+      if (i === 0) {
+        capitalise += char[i]?.split("")[0].toUpperCase();
+      } else {
+        capitalise += char[i];
+      }
+    }
+    return capitalise;
+  }
+  return char;
+};
